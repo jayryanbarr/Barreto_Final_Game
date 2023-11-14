@@ -1,18 +1,24 @@
 import pygame
+from fspaceship import Player
 
 # Initialize Pygame
 pygame.init()
 
 # Constants
-WIDTH, HEIGHT = 600, 800
-#BACKGROUND_COLOR = (0, 0, 0)  # Black
+WIDTH, HEIGHT = 600, 650
+BACKGROUND_COLOR = (0, 0, 0)  # Black to be behind the png when blit
 
-# Create the screen
+# Creates the screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Invaders")
 
-# Load your background image
-background_image = pygame.image.load("assets/images/background/background.jpg")  # Replace with the path to your background image
+# Loads background image
+background_image = pygame.image.load("assets/images/background/background.jpg")
+
+#Sprite Int
+all_sprites = pygame.sprite.Group()
+player = Player()
+all_sprites.add(player)
 
 # Game loop
 running = True
@@ -21,15 +27,18 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # Clear the screen
-    #screen.fill(BACKGROUND_COLOR)
-
-    # Draw the background image
+    # Draw background
     screen.blit(background_image, (0, 0))
+
+    #Updates locations
+    all_sprites.update()
+
+    # Draw all sprites
+    all_sprites.draw(screen)
 
     # Update the display
     pygame.display.flip()
 
 # Quit the game
 pygame.quit()
-sys.exit()
+
