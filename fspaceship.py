@@ -3,7 +3,7 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("assets/images/playerShip1_blue.png")
+        self.image = pygame.image.load("assets/images/friendlies/playerShip1_blue.png")
         self.image = pygame.transform.scale_by(self.image, 0.5)
         self.rect = self.image.get_rect()
         self.rect.centerx = 300  # Initial x-position at the center of the screen
