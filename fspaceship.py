@@ -8,10 +8,9 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = 300  # Initial x-position at the center of the screen
         self.rect.bottom = 600  # Initial y-position near the bottom
-        self.speed = 1
+        self.speed = 5
 
     def update(self):
-        #changes speed within sprite by key press
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.rect.x -= self.speed
