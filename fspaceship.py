@@ -16,3 +16,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.x -= self.speed
         if keys[pygame.K_RIGHT]:
             self.rect.x += self.speed
+        if self.rect.x <= 0:
+            self.rect.x = 0
+        if self.rect.x >= 550:
+            self.rect.x = 550
