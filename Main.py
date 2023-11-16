@@ -1,6 +1,7 @@
 import pygame
 from fspaceship import Player
 from falien import Alien
+from flaser import Laser
 
 
 # Initialize Pygame
@@ -18,7 +19,6 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 #pygame.display.set_caption("Space Invaders")
 
 #Sprites
-
 #Sprite for main spaceship
 all_sprites = pygame.sprite.Group()
 player = Player() #fspaceship
@@ -26,8 +26,9 @@ all_sprites.add(player)
 
 #Sprite For Aliens
 alien_group = pygame.sprite.Group()
-alien1 = Alien() #fspaceship
-alien_group.add(alien1)
+
+#Sprite group for the lasers
+lasers_group = pygame.sprite.Group()
 
 #Game clock
 clock = pygame.time.Clock()
@@ -55,9 +56,26 @@ while running:
         alien_group.add(alien)
         alien_spawn_timer = 0
 
+    #Collision of laser and alines
+    #Detects collisons, checks the first and second group. True kills the groups aka makes disappear
+    hits = pygame.sprite.groupcollide(alien_group, lasers_group, True, True)
+
+
+    # Handle player's spaceship shooting lasers By top arrow key
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP]:
+        now = pygame.time.get_ticks()
+        if now - player.last_shot > player.shoot_delay:
+            player.last_shot = now
+            laser = Laser(player.rect.centerx, player.rect.top)
+            lasers_group.add(laser)
+            all_sprites.add(laser)
+
+
     #Updates locations
     alien_group.update()
     all_sprites.update()
+
 
     # Draw all sprites
     all_sprites.draw(screen)
