@@ -16,3 +16,8 @@ class Laser(pygame.sprite.Sprite):
         # Remove the laser if it goes off the screen
         if self.rect.y < 0:
             self.kill()
+
+    def play_laser_sound(self):
+        laser_sound = pygame.mixer.Sound("Assets/Sounds/lasershot.wav")
+        # Play the laser sound when firing
+        laser_sound.play()
