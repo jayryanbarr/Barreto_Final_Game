@@ -7,7 +7,7 @@ from flaser import Laser
 # Initialize Pygame
 pygame.init()
 
-# Constants
+# Constants / Initialzing
 WIDTH, HEIGHT = 600, 650
 BACKGROUND_COLOR = (0, 0, 0)  # Black to be behind the png when blit
 FPS = 60
@@ -15,6 +15,7 @@ background_image = pygame.image.load("assets/images/background/background.jpg")
 alien_spawn_timer = 0
 explosion_sound = pygame.mixer.Sound("Assets/Sounds/explosion2.wav")
 pygame.mixer.music.load('Assets/Sounds/Spaceship.mp3')
+score = 0
 
 
 # Creates the screen
@@ -40,6 +41,9 @@ pygame.mixer.music.play(-1)
 
 #Game clock
 clock = pygame.time.Clock()
+
+#Font for the score display
+font = pygame.font.Font(None, 24)
 
 # Game loop
 running = True
@@ -69,6 +73,7 @@ while running:
     hits = pygame.sprite.groupcollide(alien_group, lasers_group, True, True)
     if hits:
         explosion_sound.play()  # Play the explosion sound when a collision occurs
+        score += 10 #adds scroe
 
     # Handle player's spaceship shooting lasers By top arrow key
     keys = pygame.key.get_pressed()
@@ -91,6 +96,11 @@ while running:
     all_sprites.draw(screen)
     alien_group.draw(screen)
 
+    # Display the score in the top left corner
+    score_text = font.render(f"SCORE: {score}", True, (255, 255, 255)) #True smoothes pixels
+    screen.blit(score_text, (10, 10)) #Renders with location (10,10)
+
+    #Caption
     pygame.display.set_caption(f"Space Shooters {clock.get_fps()}")
     # Update the display
     pygame.display.flip()
