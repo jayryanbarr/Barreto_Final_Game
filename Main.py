@@ -3,7 +3,6 @@ from fspaceship import Player
 from falien import Alien
 from flaser import Laser
 
-
 # Initialize Pygame
 pygame.init()
 
@@ -22,7 +21,6 @@ score = 0
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 #pygame.display.set_caption("Space Invaders")
 
-#Sprites
 #Sprite for main spaceship
 all_sprites = pygame.sprite.Group()
 player = Player() #fspaceship
@@ -33,7 +31,6 @@ alien_group = pygame.sprite.Group()
 
 #Sprite group for the lasers
 lasers_group = pygame.sprite.Group()
-
 
 # Play the background music on a loop
 pygame.mixer.music.set_volume(0.8) # Makes music less loud
@@ -87,7 +84,7 @@ while running:
             # Play the laser sound
             laser.play_laser_sound()
 
-            #Updates locations
+    #Updates locations
     alien_group.update()
     all_sprites.update()
 
