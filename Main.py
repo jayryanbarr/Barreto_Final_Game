@@ -1,7 +1,8 @@
 import pygame
 from fspaceship import Player
-from falien import Alien
+from falien import AlienEasy, AlienMedium, AlienHard
 from flaser import Laser
+import random
 
 # Initialize Pygame
 pygame.init()
@@ -16,10 +17,13 @@ explosion_sound = pygame.mixer.Sound("Assets/Sounds/explosion2.wav")
 pygame.mixer.music.load('Assets/Sounds/Spaceship.mp3')
 score = 0
 
+# Constants for alien spawning thresholds
+ALIEN_EASY_THRESHOLD = 50
+ALIEN_MEDIUM_THRESHOLD = 100
+ALIEN_HARD_THRESHOLD = 150
 
 # Creates the screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-#pygame.display.set_caption("Space Invaders")
 
 #Sprite for main spaceship
 all_sprites = pygame.sprite.Group()
@@ -33,10 +37,11 @@ alien_group = pygame.sprite.Group()
 lasers_group = pygame.sprite.Group()
 
 # Play the background music on a loop
+#Evan Prince Showed me how to do this.
 pygame.mixer.music.set_volume(0.8) # Makes music less loud
 pygame.mixer.music.play(-1)
 
-#Game clock
+# Game clock
 clock = pygame.time.Clock()
 
 #Font for the score display
@@ -59,18 +64,56 @@ while running:
 
     #Alien Spawner
     alien_spawn_timer = alien_spawn_timer + period
-    #print(f"Alien Spawn Timer: {alien_spawn_timer}") #For Debugging
-    if alien_spawn_timer >= 2:  #Spawn rate
-        alien = Alien()
-        alien_group.add(alien)
+
+    #Score Within Easy Threshold
+    if score <= ALIEN_EASY_THRESHOLD and alien_spawn_timer >= 2:
+        num_aliens = random.choice([1, 3])
+        for i in range(num_aliens):
+            alien = AlienEasy()
+            alien_group.add(alien)
         alien_spawn_timer = 0
+    #Score Within Medium Threshold
+    elif score <= ALIEN_MEDIUM_THRESHOLD and score > ALIEN_EASY_THRESHOLD and alien_spawn_timer > 1.2:
+        # Randomly select between AlienEasy and AlienMedium
+        random_difficulty = random.choice(["easy", "medium"])
+        if random_difficulty == "easy":
+            num_aliens = random.choice([1, 3])
+            for i in range(num_aliens):
+                alien = AlienEasy()
+                alien_group.add(alien)
+            alien_spawn_timer = 0
+        else:
+            alien = AlienMedium()
+            alien_group.add(alien)
+            alien_spawn_timer = 0
+    #Score Within Hard Threshold
+    elif score >= ALIEN_MEDIUM_THRESHOLD and alien_spawn_timer > 1:
+        # Randomly select between all three alien types
+        random_difficulty = random.choice(["easy", "medium", "hard"])
+        if random_difficulty == "easy":
+            num_aliens = random.choice([1, 3])
+            for i in range(num_aliens):
+                alien = AlienEasy()
+                alien_group.add(alien)
+            alien_spawn_timer = 0
+        elif random_difficulty == "medium":
+            alien = AlienMedium()
+            alien_group.add(alien)
+            alien_spawn_timer = 0
+        else:
+            alien = AlienHard()
+            alien_group.add(alien)
+            alien_spawn_timer = 0
 
     #Collision of laser and alines
     #Detects collisons, checks the first and second group. True kills the groups aka makes disappear
     hits = pygame.sprite.groupcollide(alien_group, lasers_group, True, True)
+    #creates a dictionary of values of sprites
     if hits:
+        for alien_hit in hits.keys():
+            for laser_hit in hits[alien_hit]:
+                score += alien_hit.point_value
         explosion_sound.play()  # Play the explosion sound when a collision occurs
-        score += 10 #adds scroe
 
     # Handle player's spaceship shooting lasers By top arrow key
     keys = pygame.key.get_pressed()
@@ -88,7 +131,6 @@ while running:
     alien_group.update()
     all_sprites.update()
 
-
     # Draw all sprites
     all_sprites.draw(screen)
     alien_group.draw(screen)
@@ -101,6 +143,8 @@ while running:
     pygame.display.set_caption(f"Space Shooters {clock.get_fps()}")
     # Update the display
     pygame.display.flip()
+
+
 
 # Quit the game
 pygame.quit()
