@@ -1,13 +1,15 @@
 import pygame
+import random
+import sys
 from fspaceship import Player
 from falien import AlienEasy, AlienMedium, AlienHard
 from flaser import Laser
-import random
+from game_over import handle_game_over
 
 # Initialize Pygame
 pygame.init()
 
-# Constants / Initialzing
+# Constants / Initializing
 WIDTH, HEIGHT = 600, 650
 BACKGROUND_COLOR = (0, 0, 0)  # Black to be behind the png when blit
 FPS = 60
@@ -47,8 +49,20 @@ clock = pygame.time.Clock()
 #Font for the score display
 font = pygame.font.Font(None, 24)
 
+# Functions:
+
+# Function to check if an alien is out of bounds
+def any_alien_out_of_bounds(alien_group, screen_height=650):
+    return any(alien.rect.y > screen_height for alien in alien_group)
+
+# Function to check if the spaceship collides with an alien
+def spaceship_collision():
+    return pygame.sprite.spritecollide(player, alien_group, False)
+
 # Game loop
 running = True
+game_over = False
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -61,59 +75,69 @@ while running:
     # Draw background
     screen.blit(background_image, (0, 0))
 
-
-    #Alien Spawner
-    alien_spawn_timer = alien_spawn_timer + period
-
-    #Score Within Easy Threshold
-    if score <= ALIEN_EASY_THRESHOLD and alien_spawn_timer >= 2:
-        num_aliens = random.choice([1, 3])
-        for i in range(num_aliens):
-            alien = AlienEasy()
-            alien_group.add(alien)
-        alien_spawn_timer = 0
-    #Score Within Medium Threshold
-    elif score <= ALIEN_MEDIUM_THRESHOLD and score > ALIEN_EASY_THRESHOLD and alien_spawn_timer > 1.2:
-        # Randomly select between AlienEasy and AlienMedium
-        random_difficulty = random.choice(["easy", "medium"])
-        if random_difficulty == "easy":
+    if not game_over:
+        #Alien Spawner - Concept from Evan Prince
+        alien_spawn_timer = alien_spawn_timer + period
+        #Score Within Easy Threshold
+        if score <= ALIEN_EASY_THRESHOLD and alien_spawn_timer >= 2:
             num_aliens = random.choice([1, 3])
             for i in range(num_aliens):
                 alien = AlienEasy()
                 alien_group.add(alien)
             alien_spawn_timer = 0
-        else:
-            alien = AlienMedium()
-            alien_group.add(alien)
-            alien_spawn_timer = 0
-    #Score Within Hard Threshold
-    elif score >= ALIEN_MEDIUM_THRESHOLD and alien_spawn_timer > 1:
-        # Randomly select between all three alien types
-        random_difficulty = random.choice(["easy", "medium", "hard"])
-        if random_difficulty == "easy":
-            num_aliens = random.choice([1, 3])
-            for i in range(num_aliens):
-                alien = AlienEasy()
-                alien_group.add(alien)
-            alien_spawn_timer = 0
-        elif random_difficulty == "medium":
-            alien = AlienMedium()
-            alien_group.add(alien)
-            alien_spawn_timer = 0
-        else:
-            alien = AlienHard()
-            alien_group.add(alien)
-            alien_spawn_timer = 0
+        #Score Within Medium Threshold
+        elif score <= ALIEN_MEDIUM_THRESHOLD and score > ALIEN_EASY_THRESHOLD and alien_spawn_timer > 1.2:
+            # Randomly select between AlienEasy and AlienMedium
+            random_difficulty = random.choice(["easy", "medium"])
+            if random_difficulty == "easy":
+                num_aliens = random.choice([1, 4])
+                for i in range(num_aliens):
+                    alien = AlienEasy()
+                    alien_group.add(alien)
+                alien_spawn_timer = 0
+            else:
+                num_aliens = random.choice([1, 3])
+                for i in range(num_aliens):
+                    alien = AlienMedium()
+                    alien_group.add(alien)
+                alien_spawn_timer = 0
+        #Score Within Hard Threshold
+        elif score >= ALIEN_MEDIUM_THRESHOLD and alien_spawn_timer > 1:
+            # Randomly select between all three alien types
+            random_difficulty = random.choice(["easy", "medium", "hard"])
+            if random_difficulty == "easy":
+                num_aliens = random.choice([2, 4])
+                for i in range(num_aliens):
+                    alien = AlienEasy()
+                    alien_group.add(alien)
+                alien_spawn_timer = 0
+            elif random_difficulty == "medium":
+                num_aliens = random.choice([1, 3])
+                for i in range(num_aliens):
+                    alien = AlienMedium()
+                    alien_group.add(alien)
+                alien_spawn_timer = 0
+            else:
+                num_aliens = random.choice([1, 2])
+                for i in range(num_aliens):
+                    alien = AlienHard()
+                    alien_group.add(alien)
+                alien_spawn_timer = 0
 
-    #Collision of laser and alines
-    #Detects collisons, checks the first and second group. True kills the groups aka makes disappear
-    hits = pygame.sprite.groupcollide(alien_group, lasers_group, True, True)
-    #creates a dictionary of values of sprites
-    if hits:
-        for alien_hit in hits.keys():
-            for laser_hit in hits[alien_hit]:
-                score += alien_hit.point_value
-        explosion_sound.play()  # Play the explosion sound when a collision occurs
+        #Collision of laser and alines
+        #Detects collisons, checks the first and second group. True kills the groups aka makes disappear
+        hits = pygame.sprite.groupcollide(alien_group, lasers_group, True, True)
+        #creates a dictionary of values of sprites
+        if hits:
+            for alien_hit in hits.keys():
+                for laser_hit in hits[alien_hit]:
+                    score += alien_hit.point_value
+            explosion_sound.play()  # Play the explosion sound when a collision occurs
+
+        #Game Over
+        if any_alien_out_of_bounds(alien_group, HEIGHT) or spaceship_collision():
+            game_over = True  # Set the game_over flag to True
+            handle_game_over(screen, font)  # Call the game over function
 
     # Handle player's spaceship shooting lasers By top arrow key
     keys = pygame.key.get_pressed()
@@ -148,4 +172,4 @@ while running:
 
 # Quit the game
 pygame.quit()
-
+sys.exit()
