@@ -47,7 +47,8 @@ pygame.mixer.music.play(-1)
 clock = pygame.time.Clock()
 
 #Font for the score display
-font = pygame.font.Font(None, 24)
+font1 = pygame.font.Font(None, 24)
+font2 = pygame.font.Font(None, 60)
 
 # Functions:
 
@@ -137,7 +138,7 @@ while running:
         #Game Over
         if any_alien_out_of_bounds(alien_group, HEIGHT) or spaceship_collision():
             game_over = True  # Set the game_over flag to True
-            handle_game_over(screen, font)  # Call the game over function
+            handle_game_over(screen, font2, font1, score)   # Call the game over function
 
     # Handle player's spaceship shooting lasers By top arrow key
     keys = pygame.key.get_pressed()
@@ -160,7 +161,7 @@ while running:
     alien_group.draw(screen)
 
     # Display the score in the top left corner
-    score_text = font.render(f"SCORE: {score}", True, (255, 255, 255)) #True smoothes pixels
+    score_text = font1.render(f"SCORE: {score}", True, (255, 255, 255)) #True smoothes pixels
     screen.blit(score_text, (10, 10)) #Renders with location (10,10)
 
     #Caption
