@@ -5,6 +5,7 @@ from fspaceship import Player
 from falien import AlienEasy, AlienMedium, AlienHard
 from flaser import Laser
 from game_over import handle_game_over
+from main_menu import main_menu
 
 # Initialize Pygame
 pygame.init()
@@ -47,8 +48,12 @@ pygame.mixer.music.play(-1)
 clock = pygame.time.Clock()
 
 #Font for the score display
+font_path = "assets/fonts/Airstream.ttf"
 font1 = pygame.font.Font(None, 24)
 font2 = pygame.font.Font(None, 60)
+font3 = pygame.font.Font(None, 40)
+fontscore =  pygame.font.Font(font_path, 24)
+titlefont = pygame.font.Font(font_path, 40)
 
 # Functions:
 
@@ -60,9 +65,10 @@ def any_alien_out_of_bounds(alien_group, screen_height=650):
 def spaceship_collision():
     return pygame.sprite.spritecollide(player, alien_group, False)
 
-# Game loop
+# Game loop Booleans
 running = True
 game_over = False
+in_main_menu = True
 
 while running:
     for event in pygame.event.get():
@@ -76,6 +82,10 @@ while running:
     # Draw background
     screen.blit(background_image, (0, 0))
 
+    if in_main_menu:
+        main_menu(screen, titlefont)  # Show the main menu
+        in_main_menu = False  # Once "Start" is clicked, exit the main menu
+    #GAME LOGIC
     if not game_over:
         #Alien Spawner - Concept from Evan Prince
         alien_spawn_timer = alien_spawn_timer + period
@@ -107,19 +117,19 @@ while running:
             # Randomly select between all three alien types
             random_difficulty = random.choice(["easy", "medium", "hard"])
             if random_difficulty == "easy":
-                num_aliens = random.choice([2, 4])
+                num_aliens = random.choice([2, 5])
                 for i in range(num_aliens):
                     alien = AlienEasy()
                     alien_group.add(alien)
                 alien_spawn_timer = 0
             elif random_difficulty == "medium":
-                num_aliens = random.choice([1, 3])
+                num_aliens = random.choice([2, 3])
                 for i in range(num_aliens):
                     alien = AlienMedium()
                     alien_group.add(alien)
                 alien_spawn_timer = 0
             else:
-                num_aliens = random.choice([1, 2])
+                num_aliens = random.choice([1, 3])
                 for i in range(num_aliens):
                     alien = AlienHard()
                     alien_group.add(alien)
@@ -161,7 +171,7 @@ while running:
     alien_group.draw(screen)
 
     # Display the score in the top left corner
-    score_text = font1.render(f"SCORE: {score}", True, (255, 255, 255)) #True smoothes pixels
+    score_text = fontscore.render(f"SCORE: {score}", True, (255, 255, 255)) #True smoothes pixels
     screen.blit(score_text, (10, 10)) #Renders with location (10,10)
 
     #Caption
