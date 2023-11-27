@@ -7,8 +7,8 @@ def sub_menu(screen, font):
     background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
 
     # Define button properties
-    button_width = 150
-    button_height = 50
+    button_width = 300
+    button_height = 100
     button_color = (0, 0, 0)  # Green color for the button
     button_x = (screen.get_width() - button_width) // 2  # Center horizontally
     button_y = (screen.get_height() - button_height) // 2  # Center vertically
