@@ -1,5 +1,6 @@
 import pygame
 import sys
+
 def main_menu(screen, font):
     # Load and scale the background image
     background_image = pygame.image.load("assets/images/background/homescreen2.png")
@@ -25,7 +26,8 @@ def main_menu(screen, font):
                     return  # Return to start the game
         # Draw the background image
         screen.blit(background_image, (0, 0))
-        # Draw the bright green box
+        # Draw the buttom
         pygame.draw.rect(screen, button_color, button_rect)
         screen.blit(start_button_text, start_button_rect)
+        pygame.display.set_caption(f"Space Invaders Main Menu")
         pygame.display.flip()

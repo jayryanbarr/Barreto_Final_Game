@@ -33,5 +33,6 @@ def help_menu(screen, font):
         back_text = font.render('Back', True, (255, 255, 255))
         back_text_rect = back_text.get_rect(center=back_button_rect.center)
         screen.blit(back_text, back_text_rect)
+        pygame.display.set_caption(f"Space Invaders Help Menu")
 
         pygame.display.update()

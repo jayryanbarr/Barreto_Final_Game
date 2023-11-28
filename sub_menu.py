@@ -1,31 +1,43 @@
 import pygame
 import sys
+from highscore_manager import get_high_score
+
 
 def sub_menu(screen, font):
+    # Intializing
+    font_path = "assets/fonts/ARCADECLASSIC.ttf"
+    fonthigh = pygame.font.Font(font_path, 24)
+
     # Load and scale the background image
-    background_image = pygame.image.load("assets/images/background/submenu.jpg")
+    background_image = pygame.image.load("assets/images/background/submenu2.jpg")
     background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
 
     # Define button properties
     button_width = 300
-    button_height = 100
+    button_height = 75
     button_color = (0, 0, 0)  # Button color
 
     #Puts all coordinates in middle and then adjust height
     # Start Game Button
     start_button_x = (screen.get_width() - button_width) // 2
-    start_button_y = 250
+    start_button_y = 275
     start_button_rect = pygame.Rect(start_button_x, start_button_y, button_width, button_height)
 
     # Help Button
     help_button_x = (screen.get_width() - button_width) // 2
-    help_button_y = 350
+    help_button_y = 325
     help_button_rect = pygame.Rect(help_button_x, help_button_y, button_width, button_height)
 
     # Exit Button
     exit_button_x = (screen.get_width() - button_width) // 2
-    exit_button_y = 450
+    exit_button_y = 375
     exit_button_rect = pygame.Rect(exit_button_x, exit_button_y, button_width, button_height)
+
+    #Displays High Score
+    high_score = get_high_score()
+    high_score_text = fonthigh.render(f"High Score  {high_score}", True, (250, 128, 114))
+    high_score_rect = high_score_text.get_rect(center=(screen.get_width() // 2, 225))
+
 
     # Main loop for the sub-menu
     while True:
@@ -61,5 +73,8 @@ def sub_menu(screen, font):
         screen.blit(start_text, start_text_rect)
         screen.blit(help_text, help_text_rect)
         screen.blit(exit_text, exit_text_rect)
+        screen.blit(high_score_text, high_score_rect)
+
+        pygame.display.set_caption(f"Space Invaders Sub Menu")
 
         pygame.display.update()

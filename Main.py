@@ -7,6 +7,7 @@ from flaser import Laser
 from game_over import handle_game_over
 from main_menu import main_menu
 from sub_menu import sub_menu
+from highscore_manager import save_high_score, get_high_score
 
 # Initialize Pygame
 pygame.init()
@@ -21,10 +22,10 @@ explosion_sound = pygame.mixer.Sound("Assets/Sounds/explosion2.wav")
 pygame.mixer.music.load('Assets/Sounds/Spaceship.mp3')
 score = 0
 
-# Constants for alien spawning thresholds
+# Point Constants for alien spawning thresholds
 ALIEN_EASY_THRESHOLD = 50
-ALIEN_MEDIUM_THRESHOLD = 100
-ALIEN_HARD_THRESHOLD = 150
+ALIEN_MEDIUM_THRESHOLD = 125
+ALIEN_HARD_THRESHOLD = 175
 
 # Creates the screen
 background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
@@ -87,8 +88,6 @@ def reset_game_state():
     lasers_group.empty()
     alien_lasers_group.empty()
 
-
-
 # Game loop Booleans
 running = True
 game_over = False
@@ -121,6 +120,10 @@ while running:
     if game_over:
         reset = handle_game_over(screen, font2, endfont, score)
         if reset:
+            high_score = get_high_score()
+            if score > high_score:
+                save_high_score(score)
+                print("High Score Saved")
             reset_game_state()  # Reset game state and constants
             in_main_menu = True  # Go back to the main menu
             game_over = False  # Reset game over state
@@ -225,7 +228,7 @@ while running:
     screen.blit(score_text, (10, 10))  # Renders with location (10,10)
 
     # Caption
-    pygame.display.set_caption(f"Space Shooters {clock.get_fps()}")
+    pygame.display.set_caption(f"Space Invaders {clock.get_fps()}")
     # Update the display
     pygame.display.flip()
 

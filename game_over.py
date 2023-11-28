@@ -30,4 +30,5 @@ def handle_game_over(screen, fontgame, fontscore ,score):
         screen.blit(game_over_text, game_over_rect) #blits text surface on screen
         screen.blit(score_text, score_rect)
         screen.blit(button_text, button_rect)
+        pygame.display.set_caption(f"Space Invaders Game Over")
         pygame.display.flip() #updates display to show "Game Over"
