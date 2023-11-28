@@ -63,16 +63,7 @@ endfont = pygame.font.Font(font_path, 50)
 
 
 # Functions:
-
-# Function to check if an alien is out of bounds
-def any_alien_out_of_bounds(alien_group, screen_height=650):
-    return any(alien.rect.y > screen_height for alien in alien_group)
-
-
-# Function to check if the spaceship collides with an alien
-def spaceship_collision():
-    return pygame.sprite.spritecollide(player, alien_group, False)
-
+#Resets game
 def reset_game_state():
     global score, player, alien_group, lasers_group, alien_lasers_group, alien_spawn_timer
 #(' global allows the function to modify the actual game state variables that are defined outside (in the global scope of) '
@@ -87,6 +78,15 @@ def reset_game_state():
     alien_group.empty()
     lasers_group.empty()
     alien_lasers_group.empty()
+
+# Function to check if an alien is out of bounds
+def any_alien_out_of_bounds(alien_group, screen_height=650):
+    return any(alien.rect.y > screen_height for alien in alien_group)
+
+# Function to check if the spaceship collides with an alien
+def spaceship_collision():
+    return pygame.sprite.spritecollide(player, alien_group, False)
+
 
 # Game loop Booleans
 running = True
