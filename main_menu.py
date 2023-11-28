@@ -5,13 +5,13 @@ def main_menu(screen, font):
     background_image = pygame.image.load("assets/images/background/homescreen2.png")
     background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
     # Create a bright green box for the button
-    button_width = 150
+    button_width = 450
     button_height = 50
     button_color = (0, 0, 0)  # Bright green color
     button_x = (screen.get_width() - button_width) // 2  # Center horizontally
     button_y = 10 # Adjust this value to position the button at the top
     button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
-    start_button_text = font.render("Click Here to Begin", True, (255, 255, 255))
+    start_button_text = font.render("Click  Here  To  Start", True, (255, 255, 255))
     start_button_rect = start_button_text.get_rect()
     start_button_rect.center = button_rect.center  # Center the text within the button
     while True:

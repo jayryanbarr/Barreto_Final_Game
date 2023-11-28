@@ -55,9 +55,10 @@ clock = pygame.time.Clock()
 # Font for the score display
 font_path = "assets/fonts/ARCADECLASSIC.ttf"
 font1 = pygame.font.Font(None, 24)
-font2 = pygame.font.Font(font_path, 60)
+font2 = pygame.font.Font(font_path, 70)
 fontscore = pygame.font.Font(font_path, 24)
 titlefont = pygame.font.Font(font_path, 40)
+endfont = pygame.font.Font(font_path, 50)
 
 
 # Functions:
@@ -70,6 +71,22 @@ def any_alien_out_of_bounds(alien_group, screen_height=650):
 # Function to check if the spaceship collides with an alien
 def spaceship_collision():
     return pygame.sprite.spritecollide(player, alien_group, False)
+
+def reset_game_state():
+    global score, player, alien_group, lasers_group, alien_lasers_group, alien_spawn_timer
+#(' global allows the function to modify the actual game state variables that are defined outside (in the global scope of) '
+#'the function, ensuring that changes inside the function reflect in the entire game.')
+    score = 0  # Reset score
+    alien_spawn_timer = 0  # Reset alien spawn timer
+
+    # Reset player position or state
+    player.rect.center = (WIDTH // 2, HEIGHT - 50)  # Example position
+
+    # Clear existing aliens and lasers
+    alien_group.empty()
+    lasers_group.empty()
+    alien_lasers_group.empty()
+
 
 
 # Game loop Booleans
@@ -101,6 +118,13 @@ while running:
         sub_menu(screen, titlefont)
         in_sub_menu = False
 
+    if game_over:
+        reset = handle_game_over(screen, font2, endfont, score)
+        if reset:
+            reset_game_state()  # Reset game state and constants
+            in_main_menu = True  # Go back to the main menu
+            game_over = False  # Reset game over state
+            continue  # Continue the loop to start from the beginning
 
     # GAME LOGIC
     if not game_over:
@@ -166,7 +190,6 @@ while running:
         # Game Over
         if any_alien_out_of_bounds(alien_group, HEIGHT) or spaceship_collision():
             game_over = True  # Set the game_over flag to True
-            handle_game_over(screen, font2, font1, score)  # Call the game over function
 
         # Check for collisions between alien lasers and the player (friendly spaceship)
         hits2 = pygame.sprite.spritecollide(player, alien_lasers_group, False)
@@ -174,7 +197,6 @@ while running:
         if hits2:
             # Handle game over logic here
             game_over = True
-            handle_game_over(screen, font2, font1, score)
 
     # Handle player's spaceship shooting lasers By top arrow key
     keys = pygame.key.get_pressed()
