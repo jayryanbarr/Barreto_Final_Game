@@ -1,6 +1,6 @@
 READ ME
 
-Space Shooters - MIDN 3/C Barreto EW200 Final Project
+Space Invaders - MIDN 3/C Barreto EW200 Final Project
 
 Overview:
 Space Shooters is a classic arcade-style game created using Pygame. In this game, you control a spaceship and your mission is to defend the galaxy from incoming alien invaders. Use your spaceship to shoot down the aliens, accumulate points, and achieve the highest score possible.
@@ -17,7 +17,7 @@ Firing Lasers: Press the up arrow key to fire lasers and destroy the approaching
 Features
 
 Dynamic Gameplay:
-The game features dynamic alien spawning, continuous background music, and exciting laser effects.
+The game features dynamic alien spawning, continuous background music, and laser effects.
 
 Score Tracking: 
 Your current score is displayed in the top left corner of the screen. Each destroyed alien adds 10 points to your score.

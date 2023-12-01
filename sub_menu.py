@@ -38,6 +38,10 @@ def sub_menu(screen, font):
     high_score_text = fonthigh.render(f"High Score  {high_score}", True, (250, 128, 114))
     high_score_rect = high_score_text.get_rect(center=(screen.get_width() // 2, 225))
 
+    # Load the click sound
+    click_sound = pygame.mixer.Sound("assets/sounds/click.wav")
+
+
 
     # Main loop for the sub-menu
     while True:
@@ -49,11 +53,14 @@ def sub_menu(screen, font):
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button_rect.collidepoint(event.pos):
+                    click_sound.play()
                     return  # Return to start the game
                 elif help_button_rect.collidepoint(event.pos):
+                    click_sound.play()
                     from help_menu import help_menu  # Import here to avoid circular import
                     help_menu(screen, font)  # Open Help Menu
                 elif exit_button_rect.collidepoint(event.pos):
+                    click_sound.play()
                     pygame.quit()
                     sys.exit()
 

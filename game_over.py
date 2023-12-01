@@ -17,6 +17,9 @@ def handle_game_over(screen, fontgame, fontscore ,score):
     button_rect = button_text.get_rect()
     button_rect.center = (screen.get_width() // 2, screen.get_height() // 2 + 100)
 
+    # Sound
+    click_sound = pygame.mixer.Sound("assets/sounds/click.wav")
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -25,6 +28,7 @@ def handle_game_over(screen, fontgame, fontscore ,score):
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if button_rect.collidepoint(event.pos):
+                    click_sound.play()
                     return True  # Return to indicate button was pressed
 
         screen.blit(game_over_text, game_over_rect) #blits text surface on screen

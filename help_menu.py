@@ -14,6 +14,9 @@ def help_menu(screen, font):
     button_y = 500
     back_button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
 
+    #Sound
+    click_sound = pygame.mixer.Sound("assets/sounds/click.wav")
+
     # Main loop for the help menu
     while True:
         screen.blit(background_image, (0, 0))
@@ -24,6 +27,7 @@ def help_menu(screen, font):
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if back_button_rect.collidepoint(event.pos):
+                    click_sound.play()
                     return  # Return to the previous menu
 
         # Draw the back button
