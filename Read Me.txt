@@ -3,30 +3,30 @@ READ ME
 Space Invaders - MIDN 3/C Barreto EW200 Final Project
 
 Overview:
-Space Shooters is a classic arcade-style game created using Pygame. In this game, you control a spaceship and your mission is to defend the galaxy from incoming alien invaders. Use your spaceship to shoot down the aliens, accumulate points, and achieve the highest score possible.
+Space Shooters is a classic arcade-style game created using Pygame.
+In this game, you control a spaceship and your mission is to defend the galaxy from incoming alien invaders.
+Use your spaceship to shoot down the aliens, accumulate points, and achieve the highest score possible.
 
 Objective:
 Your main objectives in the game are as follows:
-Defend the Galaxy: Prevent the alien invaders from reaching the bottom of the screen. If an alien reaches the bottom, it's game over.
-Score Points: Shoot down the alien invaders to earn points. Each destroyed alien is worth 10 points.
-Survive and Thrive: Survive for as long as possible to achieve the highest score and become the ultimate Space Shooter.
+(1) Defend the Galaxy: Prevent the alien invaders from reaching the bottom of the screen.
+If an alien reaches the bottom, it's game over.
+(2) Score Points: Shoot down the alien invaders to earn points.
+Level 1 Aliens are 10 points. Level 2 Aliens are 15 points. Level 3 Aliens ar 20 points.
+(3) Survive and Thrive: Survive for as long as possible to achieve the highest score and become the ultimate Space Shooter.
 
 Controls:
 Spaceship Movement: Use the left and right arrow keys to move your spaceship horizontally.
 Firing Lasers: Press the up arrow key to fire lasers and destroy the approaching alien invaders.
-Features
 
 Dynamic Gameplay:
 The game features dynamic alien spawning, continuous background music, and laser effects.
 
 Score Tracking: 
-Your current score is displayed in the top left corner of the screen. Each destroyed alien adds 10 points to your score.
+Your current score is displayed in the top left corner of the screen.
 
-Sound Effects: 
-Enjoy immersive sound effects, including laser shots and explosions.
-
-Responsive Controls: 
-Control your spaceship with precision using the arrow keys.
+Sound Effects:
+Enjoy immersive sound effects, including laser shots, explosions and button clicks.
 
 Have Fun!
 Space Shooters is a thrilling adventure through the cosmos. Defend the galaxy, score points, and aim for the top spot on the leaderboard. Have fun playing Space Shooters!

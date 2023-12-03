@@ -27,11 +27,11 @@ class AlienMedium(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, 550)  # Random x-position
         self.rect.y = -10
-        self.speed = 1.5
+        self.speed = 1.4
         self.point_value = 15
         self.all_sprites = all_sprites
         self.alien_lasers_group = alien_lasers_group
-        self.shoot_delay = 4500  # Delay between shots (in milliseconds)
+        self.shoot_delay = random.choice([3000, 4500])  # Delay between shots (in milliseconds)
         self.last_shot = pygame.time.get_ticks()
 
     def update(self):
@@ -65,7 +65,7 @@ class AlienHard(pygame.sprite.Sprite):
         self.point_value = 20
         self.all_sprites = all_sprites
         self.alien_lasers_group = alien_lasers_group
-        self.shoot_delay = 3000  # Delay between shots (in milliseconds)
+        self.shoot_delay = random.choice([2000, 3000])  # Delay between shots (in milliseconds)
         self.last_shot = pygame.time.get_ticks()
 
     def update(self):

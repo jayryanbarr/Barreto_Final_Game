@@ -9,7 +9,7 @@ from main_menu import main_menu
 from sub_menu import sub_menu
 from highscore_manager import save_high_score, get_high_score
 
-# Initialize Pygame
+# Initialize Pygame Modules
 pygame.init()
 
 # Constants / Initializing
@@ -23,15 +23,16 @@ pygame.mixer.music.load('Assets/Sounds/Spaceship.mp3')
 score = 0
 
 # Point Constants for alien spawning thresholds
-ALIEN_EASY_THRESHOLD = 50
-ALIEN_MEDIUM_THRESHOLD = 125
-ALIEN_HARD_THRESHOLD = 175
+ALIEN_EASY_THRESHOLD = 75
+ALIEN_MEDIUM_THRESHOLD = 200
+ALIEN_HARD_THRESHOLD = 250
 
-# Creates the screen
+# Creates the surface 'screen' in tuple, with background image scale
 background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Sprite for main spaceship
+#Groups Manage Multiple sprites
 all_sprites = pygame.sprite.Group()
 player = Player()  # fspaceship
 all_sprites.add(player)
@@ -66,8 +67,8 @@ endfont = pygame.font.Font(font_path, 50)
 #Resets game
 def reset_game_state():
     global score, player, alien_group, lasers_group, alien_lasers_group, alien_spawn_timer
-#(' global allows the function to modify the actual game state variables that are defined outside (in the global scope of) '
-#'the function, ensuring that changes inside the function reflect in the entire game.')
+#(' global allows the function to modify the actual game state variables that are defined outside
+#the function, ensuring that changes inside the function reflect in the entire game.')
     score = 0  # Reset score
     alien_spawn_timer = 0  # Reset alien spawn timer
 
@@ -82,6 +83,9 @@ def reset_game_state():
 # Function to check if an alien is out of bounds
 def any_alien_out_of_bounds(alien_group, screen_height=650):
     return any(alien.rect.y > screen_height for alien in alien_group)
+#Function iterates over each alien in the alien_group. Checks if y> than heigh of screen
+
+
 
 # Function to check if the spaceship collides with an alien
 def spaceship_collision():
@@ -133,25 +137,27 @@ while running:
     if not game_over:
         # Alien Spawner - Concept from Evan Prince
         alien_spawn_timer = alien_spawn_timer + period
+        ################################
         # Score Within Easy Threshold
         if score <= ALIEN_EASY_THRESHOLD and alien_spawn_timer >= 2:
-            num_aliens = random.choice([1, 3])
+            num_aliens = random.choice([2, 4])
             for i in range(num_aliens):
                 alien = AlienEasy()
                 alien_group.add(alien)
             alien_spawn_timer = 0
+
         # Score Within Medium Threshold
         elif score <= ALIEN_MEDIUM_THRESHOLD and score > ALIEN_EASY_THRESHOLD and alien_spawn_timer > 1.2:
             # Randomly select between AlienEasy and AlienMedium
             random_difficulty = random.choice(["easy", "medium"])
             if random_difficulty == "easy":
-                num_aliens = random.choice([1, 3])
+                num_aliens = random.choice([2, 3])
                 for i in range(num_aliens):
                     alien = AlienEasy()
                     alien_group.add(alien)
                 alien_spawn_timer = 0
             else:
-                num_aliens = random.choice([1, 2])
+                num_aliens = random.choice([1, 3])
                 for i in range(num_aliens):
                     alien = AlienMedium(all_sprites,alien_lasers_group)
                     alien_group.add(alien)
@@ -161,13 +167,13 @@ while running:
             # Randomly select between all three alien types
             random_difficulty = random.choice(["easy", "medium", "hard"])
             if random_difficulty == "easy":
-                num_aliens = random.choice([2, 3])
+                num_aliens = random.choice([2, 4])
                 for i in range(num_aliens):
                     alien = AlienEasy()
                     alien_group.add(alien)
                 alien_spawn_timer = 0
             elif random_difficulty == "medium":
-                num_aliens = random.choice([1, 2])
+                num_aliens = random.choice([1, 4])
                 for i in range(num_aliens):
                     alien = AlienMedium(all_sprites,alien_lasers_group)
                     alien_group.add(alien)
